@@ -1,0 +1,8 @@
+{
+  "name": "lengoo-coding-challenge",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/lengoo/backend-coding-challenge-yuki-sato.git",
+  "author": "Yuki Sato <yuki.sato@lightcurve.io>",
+  "license": "MIT"
+}
