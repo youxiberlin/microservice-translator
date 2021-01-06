@@ -8,5 +8,4 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use('/translate', routes);
-app.get('/', (req, res) => res.send('hello world'));
 app.listen(port, () => console.log(`App listening at port ${port}`));

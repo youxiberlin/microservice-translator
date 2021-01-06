@@ -7,5 +7,5 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use('/data', routes);
+app.use('/', routes);
 app.listen(port, () => console.log(`App listening at port ${port}`));
