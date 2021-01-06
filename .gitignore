@@ -13,3 +13,6 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.loca
+
+# for file uploads
+gateway/uploads
