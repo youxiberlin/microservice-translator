@@ -1,6 +1,6 @@
 # Coding challenge
 
-Hi Applicant!
+Hi Yuki!
 
 Thanks for taking your time to work on this coding challenge.
 
