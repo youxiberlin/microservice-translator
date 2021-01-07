@@ -22,7 +22,6 @@ function publishToChannel(channel, { routingKey, exchangeName, data }) {
   });
 }
 
-// consume messages from RabbitMQ
 function consume({ connection, channel, resultsChannel }) {
   return new Promise((resolve, reject) => {
     channel.consume("processing.requests", async function (msg) {
@@ -32,7 +31,15 @@ function consume({ connection, channel, resultsChannel }) {
       let requestData = data.requestData;
       console.log('data:', data)
       console.log("Received a request message, requestId:", requestId);
-      let processingResults = await processMessage(requestData);
+      //TODO extract email from the data and put it to email destination
+      let processingResults = await mailer(
+        {
+          from: '"Yuki Sato 👻" <sato.youxi@gmail.com>', // sender address
+          to: "e9ec4dc18b-5af4c5@inbox.mailtrap.io", // list of receivers
+          subject: "Here is your translation ✔", // Subject line
+          text: requestData, // plain text body
+        }
+      ).catch(console.err);
 
       await publishToChannel(resultsChannel, {
         exchangeName: "processing",
@@ -54,18 +61,4 @@ function consume({ connection, channel, resultsChannel }) {
   });
 }
 
-// simulate data processing that takes 5 seconds
-function processMessage(requestData) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(requestData + "-processed")
-    }, 5000);
-  });
-}
-
 listenForMessages();
-
-// async..await is not allowed in global scope, must use a wrapper
-mailer().catch(console.err)
-
-// main().catch(console.error);
