@@ -1,14 +1,11 @@
-const fs = require('fs');
-
 const postText = async (req, res, next) => {
-  const file = req.file;
-
-  if (!file) {
-    const error = new Error('Please upload a file');
-    error.httpStatusCode = 400;
-    return next(error);
+  console.log(req.body)
+  if (res.statusCode === 200) {
+    console.log('Recived Data')
+    res.send({
+      message: 'Successfully uploaded'
+    });
   }
-  res.send(file);
 };
 
 module.exports = {
