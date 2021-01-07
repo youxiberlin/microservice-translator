@@ -4,5 +4,9 @@
   "main": "index.js",
   "repository": "https://github.com/lengoo/backend-coding-challenge-yuki-sato.git",
   "author": "Yuki Sato <yuki.sato@lightcurve.io>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "amqplib": "^0.6.0",
+    "dotenv": "^8.2.0"
+  }
 }

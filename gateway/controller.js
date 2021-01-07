@@ -1,4 +1,39 @@
 const fs = require('fs');
+const path  = require('path');
+require('dotenv').config({path: path.resolve(process.cwd(), '../.env')});
+
+const amqp = require('amqplib')
+let lastRequestId = 1;
+const messageQueueConnectionString = process.env.CLOUDAMQP_URL;
+
+const postData = async (req, res, next) => {
+  let requestId = lastRequestId;
+  lastRequestId++;
+
+  // connect to Rabbit MQ and create a channel
+  let connection = await amqp.connect(messageQueueConnectionString);
+  let channel = await connection.createConfirmChannel();
+  // publish the data to Rabbit MQ
+  let requestData = req.body.data;
+
+  console.log("Published a request message, requestId:", requestId);
+  await publishToChannel(channel, { routingKey: "request", exchangeName: "processing", data: { requestId, requestData } });
+
+  res.send({ requestId })
+};
+
+function publishToChannel(channel, { routingKey, exchangeName, data }) {
+  return new Promise((resolve, reject) => {
+    channel.publish(exchangeName, routingKey, Buffer.from(JSON.stringify(data), 'utf-8'), { persistent: true }, function (err, ok) {
+      if (err) {
+        return reject(err);
+      }
+
+      resolve();
+    })
+  });
+}
+
 
 const postText = async (req, res, next) => {
   const email = req.body.email;
@@ -22,5 +57,6 @@ const postText = async (req, res, next) => {
 };
 
 module.exports = {
-  postText
+  postText,
+  postData
 };

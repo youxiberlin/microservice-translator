@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const multer = require('multer');
-const { postText } = require('./controller');
+const { postText, postData } = require('./controller');
 const router = express.Router();
 
 const storage = multer.diskStorage({
@@ -16,5 +16,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.post('/upload', upload.single('subtitle-text'), postText);
+router.post('/process', upload.single('subtitle-text'), postData);
 
 module.exports = router;
