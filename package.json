@@ -6,7 +6,6 @@
   "author": "Yuki Sato <yuki.sato@lightcurve.io>",
   "license": "MIT",
   "dependencies": {
-    "amqplib": "^0.6.0",
     "dotenv": "^8.2.0"
   }
 }
