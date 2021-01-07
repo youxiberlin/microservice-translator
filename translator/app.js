@@ -2,20 +2,7 @@ const path  = require('path');
 require('dotenv').config({path:  path.resolve(process.cwd(), '../.env')});
 
 const amqp = require('amqplib');
-
-// RabbitMQ connection string
 const messageQueueConnectionString = process.env.CLOUDAMQP_URL;
-// const express = require('express');
-// const bodyParser = require('body-parser');
-// const routes = require('./routes');
-// const { port } = require('./config');
-
-// const app = express();
-// app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(bodyParser.json());
-
-// app.use('/translate', routes);
-// app.listen(port, () => console.log(`App listening at port ${port}`));
 
 async function listenForMessages() {
   // connect to Rabbit MQ
