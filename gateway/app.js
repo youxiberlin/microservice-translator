@@ -26,8 +26,6 @@ async function listenForResults() {
   // start consuming messages
   await consume({ connection, channel });
 }
-
-
 // consume messages from RabbitMQ
 function consume({ connection, channel, resultsChannel }) {
   return new Promise((resolve, reject) => {
