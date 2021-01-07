@@ -1,6 +1,8 @@
 const fs = require('fs');
 
 const getTranslation = async (req, res) => {
+  const data = req.body;
+  
   res.send('translated');
 };
 
