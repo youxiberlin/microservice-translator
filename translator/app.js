@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 const amqp = require('amqplib');
+const axios = require('axios');
 const messageQueueConnectionString = process.env.CLOUDAMQP_URL;
 const port = process.env.PORT || 3001;
 const routes = require('./routes');
@@ -24,6 +25,17 @@ function consume({ connection, channel, resultsChannel }) {
       let processingResults = data.processingResults;
       console.log("Received a result message, requestId:", requestId, "processingResults:", processingResults);
       await channel.ack(msg);
+      axios.post('http://localhost:3002/email', {
+        data: processingResults
+      })
+      .then(function (response) {
+        if (response.status === 200) {
+          console.log(response.data)
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     });
 
     connection.on("close", (err) => {

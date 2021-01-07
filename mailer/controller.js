@@ -3,7 +3,7 @@ const { mailer } = require('./lib/mailer');
 
 const postText = async (req, res, next) => {
   console.log('req body', req.body)
-  const data = req.body;
+  const data = req.body.data;
 
   // TODO save the e-mail data locally as text file
   await mailer(
