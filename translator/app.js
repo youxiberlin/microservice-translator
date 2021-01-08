@@ -36,6 +36,7 @@ function consume({ connection, channel, resultsChannel }) {
       console.log("Received a result message, requestId:", requestId, "docID", docId, "processingResults:", processingResults);
       await channel.ack(msg);
       axios.post('http://localhost:3002/email', {
+        docId,
         data: resultsText
       })
       .then(function (response) {

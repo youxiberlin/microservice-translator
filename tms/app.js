@@ -59,9 +59,6 @@ function processMessage(requestData) {
   const result = translator(dictData, requestData)
   return new Promise((resolve, reject) => {
     resolve(result)
-    // setTimeout(() => {
-    //   resolve(requestData + "-processed")
-    // }, 5000);
   });
 }
 
