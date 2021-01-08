@@ -9,7 +9,7 @@ module.exports = {
       instances: 1,
       autorestart: true,
       env: {
-        PORT: '3000',
+        PORT: process.env.GATEWAY_PORT || 3000,
       }
      },
      {
@@ -22,7 +22,7 @@ module.exports = {
         instances: 1,
         autorestart: true,
         env: {
-          PORT: '3001',
+          PORT: process.env.TRANSLATOR_PORT || 3001,
           AMQP_URL: process.env.AMQP_URL,
         } 
      },
@@ -36,7 +36,7 @@ module.exports = {
       instances: 1,
       autorestart: true,
       env: {
-        PORT: '3002',
+        PORT: process.env.MAILER_PORT || 3002,
         MAIL_HOST: process.env.MAIL_HOST,
         MAIL_PORT: process.env.MAIL_PORT,
         MAIL_USER: process.env.MAIL_USER,

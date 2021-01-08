@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config({ path: '../.env' })
 const amqp = require('amqplib');
 const messageQueueConnectionString = process.env.AMQP_URL;
 
