@@ -1,6 +1,6 @@
 require('dotenv').config()
 const amqp = require('amqplib');
-const messageQueueConnectionString = process.env.CLOUDAMQP_URL;
+const messageQueueConnectionString = process.env.AMQP_URL;
 
 async function listenForMessages() {
   let connection = await amqp.connect(messageQueueConnectionString);

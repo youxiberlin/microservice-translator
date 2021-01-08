@@ -28,8 +28,8 @@ const postText = async (req, res, next) => {
     .catch(function (error) {
       console.log(error);
     });
-
   });
+
   const file = req.file;
   if (!file) {
     const error = new Error('Please upload a file');

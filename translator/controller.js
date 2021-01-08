@@ -1,5 +1,5 @@
 const amqp = require('amqplib');
-const messageQueueConnectionString = process.env.CLOUDAMQP_URL;
+const messageQueueConnectionString = process.env.AMQP_URL;
 
 let lastRequestId = 1;
 

@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const amqp = require('amqplib');
 const axios = require('axios');
-const messageQueueConnectionString = process.env.CLOUDAMQP_URL;
+const messageQueueConnectionString = process.env.AMQP_URL;
 const port = process.env.PORT || 3001;
 const routes = require('./routes');
 

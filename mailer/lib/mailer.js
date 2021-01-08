@@ -3,11 +3,11 @@ const nodemailer = require('nodemailer');
 
 const mailer = async (mailObj) => {
   let transporter = nodemailer.createTransport({
-    host: process.env.MAILTRAP_HOST || "smtp.mailtrap.io",
-    port: process.env.MAILTRAP_PORT || 2525,
+    host: process.env.MAIL_HOST || "smtp.mailtrap.io",
+    port: process.env.MAIL_PORT || 2525,
     auth: {
-      user: process.env.MAILTRAP_USER,
-      pass: process.env.MAILTRAP_PASS
+      user: process.env.MAIL_USER,
+      pass: process.env.MAIL_PASS
     }
   });
 
