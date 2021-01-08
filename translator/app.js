@@ -1,5 +1,5 @@
 require('dotenv').config({ path: '../.env' })
-const fs = require('fs');
+const fs = require('fs').promises;
 const express = require('express');
 const bodyParser = require('body-parser');
 const amqp = require('amqplib');
@@ -26,16 +26,13 @@ function consume({ connection, channel, resultsChannel }) {
       let docId = data.docId
       let processingResults = data.processingResults;
       let resultsText = processingResults.join('\n');
-      fs.appendFile(`data/results/${docId}.txt`, resultsText, (err) => {
-        if (err) throw err;
-        fs.readFile(`data/uploads/${docId}.txt`, 'utf8', async (err, data) => {
-          if (err) throw err;
-          const msgFile = `Translation Results\n${resultsText}\n\nOriginal Texts\n${data}`
-          fs.appendFile(`data/email/${docId}.txt`, msgFile, (err) => {
-            if (err) throw err;
-          })
-        })
-      });
+      try {
+        await fs.appendFile(`data/results/${docId}.txt`, resultsText)
+        const originalText = await fs.readFile(`data/uploads/${docId}.txt`, 'utf8');
+        resultsText = `Translation Results\n${resultsText}\n\nOriginal Texts\n${originalText}`
+      } catch(err) {
+        console.error(err)
+      }
       console.log("Received a result message, requestId:", requestId, "docID", docId, "processingResults:", processingResults);
       await channel.ack(msg);
       axios.post('http://localhost:3002/email', {
