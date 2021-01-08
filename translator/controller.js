@@ -30,14 +30,14 @@ const postText = async (req, res, next) => {
   let channel = await connection.createConfirmChannel();
 
   console.log('req.body', req.body)
+  const { data, email } = req.body;
   const docId = nanoid();
-  fs.writeFile(`data/uploads/${docId}.txt`, req.body.data, (err) => {
+  fs.writeFile(`data/uploads/${docId}.txt`, `${email}\n${data}`, (err) => {
     if (err) return console.log(err)
   })
 
   let requestData = req.body.data;
   const extracted = requestData.split('\n').map(item => extract(item))
-  console.log('splitted', extracted)
   console.log("Published a request message, requestId:", requestId);
   await publishToChannel(channel, { routingKey: "request", exchangeName: "processing", data: { requestId, extracted, docId } });
   if (res.statusCode === 200) {

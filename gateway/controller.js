@@ -20,6 +20,7 @@ const postText = async (req, res, next) => {
 
   axios.post(`http://localhost:${translatorPort}/upload`, {
     data,
+    email,
   })
   .then(function (response) {
     if (response.status === 200) {
