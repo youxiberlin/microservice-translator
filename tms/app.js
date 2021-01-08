@@ -1,6 +1,8 @@
 require('dotenv').config({ path: '../.env' })
 const amqp = require('amqplib');
 const messageQueueConnectionString = process.env.AMQP_URL;
+const { translator } = require('./lib/translator')
+const dictData = require('./data/data')
 
 async function listenForMessages() {
   let connection = await amqp.connect(messageQueueConnectionString);
@@ -28,7 +30,7 @@ function consume({ connection, channel, resultsChannel }) {
       let msgBody = msg.content.toString();
       let data = JSON.parse(msgBody);
       let requestId = data.requestId;
-      let requestData = data.requestData;
+      let requestData = data.extracted;
       console.log('data:', data)
       console.log("Received a request message, requestId:", requestId);
       let processingResults = await processMessage(requestData);
@@ -53,10 +55,12 @@ function consume({ connection, channel, resultsChannel }) {
 
 // simulate data processing that takes 5 seconds
 function processMessage(requestData) {
+  const result = translator(dictData, requestData)
   return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve(requestData + "-processed")
-    }, 5000);
+    resolve(result)
+    // setTimeout(() => {
+    //   resolve(requestData + "-processed")
+    // }, 5000);
   });
 }
 

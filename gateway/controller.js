@@ -17,7 +17,6 @@ const postText = async (req, res, next) => {
     })
     // Send the data to translator
     axios.post('http://localhost:3001/upload', {
-      email,
       data,
     })
     .then(function (response) {

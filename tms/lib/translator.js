@@ -55,15 +55,6 @@ const translateSentence = (data, sentence) => {
  */
 const translator = (data, source) => source.map(sentence => translateSentence(data, sentence));
 
-// const source1 = {
-//   sourceLng: 'en',
-//   targetLng: 'de',
-//   source: [
-//     "Hello World",
-//     "Hello guys",
-//     "I walk to the supermarket",
-//   ]
-// }
-
-// console.log(translator(data, source1.source))
-// result [ 'Hallo Welt', 'Hallo Leute', 'Ich gehe zum Supermarkt.' ]
+module.exports = {
+  translator,
+};

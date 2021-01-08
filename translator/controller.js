@@ -13,7 +13,10 @@ const publishToChannel = (channel, { routingKey, exchangeName, data }) => {
     })
   });
 }
-
+const extract = (s) => {
+  const splitted = s.split(' ');
+  return splitted.slice(4, splitted.length).join(' ')
+}
 
 const postText = async (req, res, next) => {
   // save request id and increment
@@ -26,8 +29,10 @@ const postText = async (req, res, next) => {
 
   console.log('req.body', req.body)
   let requestData = req.body.data;
+  const extracted = requestData.split('\n').map(item => extract(item))
+  console.log('splitted', extracted)
   console.log("Published a request message, requestId:", requestId);
-  await publishToChannel(channel, { routingKey: "request", exchangeName: "processing", data: { requestId, requestData } });
+  await publishToChannel(channel, { routingKey: "request", exchangeName: "processing", data: { requestId, extracted } });
   if (res.statusCode === 200) {
     console.log('Recived Data')
     res.send({
