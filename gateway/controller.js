@@ -1,5 +1,6 @@
-const fs =  require('fs');
+const fs = require('fs').promises;
 const axios = require('axios');
+const translatorPort = process.env.TRANSLATOR_PORT || 3001;
 
 let lastRequestId = 1;
 
@@ -7,26 +8,26 @@ const postText = async (req, res, next) => {
   let requestId = lastRequestId;
   lastRequestId++;
   const email = req.body.email;
-
-  fs.readFile(req.file.path, 'utf8', async function(err, data) {
-    if (err) throw err;
+  const path = req.file.path;
+  let data;
+  try {
+    data = await fs.readFile(path, 'utf8')
     const addedEmail = `${email}\n${data}`
-    // Save the uploaded file to /uploads folder
-    fs.writeFile(req.file.path, addedEmail, (err) => {
-      if (err) return console.log(err)
-    })
-    // Send the data to translator
-    axios.post('http://localhost:3001/upload', {
-      data,
-    })
-    .then(function (response) {
-      if (response.status === 200) {
-        console.log(response.data)
-      }
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    await fs.writeFile(path, addedEmail)
+  } catch(err) {
+    console.error(err)
+  }
+
+  axios.post(`http://localhost:${translatorPort}/upload`, {
+    data,
+  })
+  .then(function (response) {
+    if (response.status === 200) {
+      console.log(response.data)
+    }
+  })
+  .catch(function (error) {
+    console.log(error);
   });
 
   const file = req.file;
