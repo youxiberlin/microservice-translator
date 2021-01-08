@@ -15,4 +15,6 @@ yarn-error.log*
 .env.production.loca
 
 # uploads
-/uploads
+/data/uploads
+/data/results
+/data/email

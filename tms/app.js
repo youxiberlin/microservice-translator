@@ -31,13 +31,14 @@ function consume({ connection, channel, resultsChannel }) {
       let data = JSON.parse(msgBody);
       let requestId = data.requestId;
       let requestData = data.extracted;
+      let docId = data.docId;
       console.log('data:', data)
       console.log("Received a request message, requestId:", requestId);
       let processingResults = await processMessage(requestData);
       await publishToChannel(resultsChannel, {
         exchangeName: "processing",
         routingKey: "result",
-        data: { requestId, processingResults }
+        data: { requestId, processingResults, docId }
       });
       console.log("Published results for requestId:", requestId);
       await channel.ack(msg);

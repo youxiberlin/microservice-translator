@@ -1,5 +1,7 @@
+const fs =  require('fs');
 const amqp = require('amqplib');
 const messageQueueConnectionString = process.env.AMQP_URL;
+const { nanoid } = require('nanoid');
 
 let lastRequestId = 1;
 
@@ -28,11 +30,16 @@ const postText = async (req, res, next) => {
   let channel = await connection.createConfirmChannel();
 
   console.log('req.body', req.body)
+  const docId = nanoid();
+  fs.writeFile(`data/uploads/${docId}.txt`, req.body.data, (err) => {
+    if (err) return console.log(err)
+  })
+
   let requestData = req.body.data;
   const extracted = requestData.split('\n').map(item => extract(item))
   console.log('splitted', extracted)
   console.log("Published a request message, requestId:", requestId);
-  await publishToChannel(channel, { routingKey: "request", exchangeName: "processing", data: { requestId, extracted } });
+  await publishToChannel(channel, { routingKey: "request", exchangeName: "processing", data: { requestId, extracted, docId } });
   if (res.statusCode === 200) {
     console.log('Recived Data')
     res.send({
