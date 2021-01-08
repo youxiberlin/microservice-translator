@@ -25,11 +25,11 @@ function consume({ connection, channel, resultsChannel }) {
       let requestId = data.requestId;
       let docId = data.docId
       let processingResults = data.processingResults;
-      let resultsText = processingResults.join('\n');
+      let resultText = processingResults.join('\n');
+      let originalText;
       try {
-        await fs.appendFile(`data/results/${docId}.txt`, resultsText)
-        const originalText = await fs.readFile(`data/uploads/${docId}.txt`, 'utf8');
-        resultsText = `Translation Results\n${resultsText}\n\nOriginal Texts\n${originalText}`
+        await fs.appendFile(`data/results/${docId}.txt`, resultText)
+        originalText = await fs.readFile(`data/uploads/${docId}.txt`, 'utf8');
       } catch(err) {
         console.error(err)
       }
@@ -37,7 +37,8 @@ function consume({ connection, channel, resultsChannel }) {
       await channel.ack(msg);
       axios.post('http://localhost:3002/email', {
         docId,
-        data: resultsText
+        result: resultText,
+        original: originalText,
       })
       .then(function (response) {
         if (response.status === 200) {

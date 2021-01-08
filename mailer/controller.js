@@ -1,22 +1,25 @@
 const fs = require('fs').promises;
 const { mailer } = require('./lib/mailer');
+const { makeFinalOutput } = require('./lib/result-formatter');
 
 const postText = async (req, res, next) => {
-  const translationResults = req.body.data;
+  const { result, original } = req.body;
+  console.log(`result: ${result}, ${original}`)
+  const output = makeFinalOutput(result, original)
   const filename = `${req.body.docId}.txt`;
   const path = `data/email/${filename}`;
   try {
-    await fs.appendFile(path, translationResults)
+    await fs.appendFile(path, output)
   } catch(err) {
     console.error(err)
   }
 
   await mailer(
     {
-      from: '"Yuki Sato 👻" <sato.youxi@gmail.com>', // sender address
-      to: "e9ec4dc18b-5af4c5@inbox.mailtrap.io", // list of receivers
-      subject: "Here is your translation ✔", // Subject line
-      text: translationResults,
+      from: '"Yuki Sato 👻" <sato.youxi@gmail.com>',
+      to: "e9ec4dc18b-5af4c5@inbox.mailtrap.io",
+      subject: "Here is your translation ✔",
+      text: "Your translation is done! Please see the attached. :)",
       attachments: [
         {
           filename: 'translation_result.txt',
