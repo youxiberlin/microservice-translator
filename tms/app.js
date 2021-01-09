@@ -1,10 +1,20 @@
 require('dotenv').config({ path: '../.env' })
 const amqp = require('amqplib');
-const messageQueueConnectionString = process.env.AMQP_URL;
+const express = require('express');
+const bodyParser = require('body-parser');
+const routes = require('./routes');
+const port = process.env.TMS_PORT || 3003;
+const dictData = require('./data/dictionary.json')
 const { translator } = require('./lib/translator')
-const dictData = require('./data/data')
+const messageQueueConnectionString = process.env.AMQP_URL;
 
-async function listenForMessages() {
+const app = express();
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
+app.use('/data', routes)
+
+const listenForMessages = async () => {
   let connection = await amqp.connect(messageQueueConnectionString);
   let channel = await connection.createChannel();
   await channel.prefetch(1);
@@ -12,7 +22,7 @@ async function listenForMessages() {
   await consume({ connection, channel, resultsChannel });
 }
 
-function publishToChannel(channel, { routingKey, exchangeName, data }) {
+const publishToChannel = async (channel, { routingKey, exchangeName, data }) => {
   return new Promise((resolve, reject) => {
     channel.publish(exchangeName, routingKey, Buffer.from(JSON.stringify(data), 'utf-8'), { persistent: true }, function (err, ok) {
       if (err) {
@@ -24,7 +34,7 @@ function publishToChannel(channel, { routingKey, exchangeName, data }) {
   });
 }
 
-function consume({ connection, channel, resultsChannel }) {
+const consume = async ({ connection, channel, resultsChannel }) => {
   return new Promise((resolve, reject) => {
     channel.consume("processing.requests", async function (msg) {
       let msgBody = msg.content.toString();
@@ -55,11 +65,12 @@ function consume({ connection, channel, resultsChannel }) {
 }
 
 // simulate data processing that takes 5 seconds
-function processMessage(requestData) {
+const processMessage = async (requestData) => {
   const result = translator(dictData, requestData)
   return new Promise((resolve, reject) => {
     resolve(result)
   });
 }
 
+app.listen(port, () => console.log(`App listening at port ${port}`));
 listenForMessages();

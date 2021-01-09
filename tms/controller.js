@@ -1,21 +1,19 @@
-const fs = require('fs');
-
-const getTranslation = async (req, res) => {
-  const data = req.body;
-  
-  res.send('translated');
-};
+const fs = require('fs').promises;
 
 const postData = async (req, res, next) => {
-  const data = JSON.stringify(req.body)
+  const data = req.body
+  try {
+    const dictData = await fs.readFile('./data/dictionary.json', 'utf8')
+    const jsonData = JSON.parse(dictData)
+    jsonData.push(data)
+    await fs.writeFile('./data/dictionary.json', JSON.stringify(jsonData))
+  } catch(err) {
+    console.error(err)
+  }
 
-  fs.writeFile('./data.json', data, (err) => {
-    if (err) return console.log(err)
-  })
   res.json('data posted');
 };
 
 module.exports = {
-  getTranslation,
   postData
 };

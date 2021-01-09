@@ -1,5 +1,3 @@
-const data = require('../data/data');
-
 const calcLevenDistance = (a, b) => {
   if(a.length == 0) return b.length; 
   if(b.length == 0) return a.length; 
@@ -44,7 +42,7 @@ const translateSentence = (data, sentence) => {
   }
   const min = Math.min(...scoreArr);
   const canTranslate = min < 5 ? true : false;
-  const idx = scoreArr.indexOf(min)
+  const idx = scoreArr.indexOf(min);
   result = data[idx].target;
   return canTranslate ? result : sentence;
 };
