@@ -1,6 +1,9 @@
+require('dotenv').config({ path: '../.env' })
 const fs = require('fs').promises;
 const { mailer } = require('./lib/mailer');
 const { makeFinalOutput } = require('./lib/result-formatter');
+const mailsender = process.env.DEV_MAILSENDER;
+const mailrecipient = process.env.DEV_MAILRECIPIENT;
 
 const postText = async (req, res, next) => {
   const { result, original, email } = req.body;
@@ -15,8 +18,8 @@ const postText = async (req, res, next) => {
 
   await mailer(
     {
-      from: '"Yuki Sato 👻" <sato.youxi@gmail.com>',
-      to: "e9ec4dc18b-5af4c5@inbox.mailtrap.io" || email,
+      from: mailsender,
+      to: mailrecipient || email,
       subject: "Here is your translation ✔",
       text: "Your translation is done! Please see the attached. :)",
       attachments: [
