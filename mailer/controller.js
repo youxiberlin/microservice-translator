@@ -16,7 +16,7 @@ const postText = async (req, res, next) => {
     console.error(err)
   }
 
-  await mailer(
+  mailer(
     {
       from: mailsender,
       to: mailrecipient || email,
@@ -29,7 +29,7 @@ const postText = async (req, res, next) => {
         }
       ]
     }
-  ).catch(console.err);
+  )
 
   res.send({
     message: `Successfully passed the data to mailer`,

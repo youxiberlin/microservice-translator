@@ -11,7 +11,8 @@ const mailer = async (mailObj) => {
     }
   });
 
-  let info = await transporter.sendMail(mailObj);
+  let info = await transporter.sendMail(mailObj)
+    .catch((err) => console.error(err))
 
   console.log("Message sent: %s", info.messageId);
   console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
