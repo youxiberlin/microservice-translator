@@ -21,11 +21,9 @@ const extract = (s) => {
 }
 
 const postText = async (req, res, next) => {
-  // save request id and increment
   let requestId = lastRequestId;
   lastRequestId++;
 
-  // connect to Rabbit MQ and create a channel
   let connection = await amqp.connect(messageQueueConnectionString);
   let channel = await connection.createConfirmChannel();
 
