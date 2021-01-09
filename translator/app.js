@@ -7,17 +7,22 @@ const axios = require('axios');
 const messageQueueConnectionString = process.env.AMQP_URL;
 const port = process.env.TRANSLATOR_PORT || 3001;
 const routes = require('./routes');
+const { separateEmail } = require('./lib/formatter')
 
 const app = express();
 
-async function listenForResults() {
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json())
+app.use('/upload', routes);
+
+const listenForResults = async () => {
   let connection = await amqp.connect(messageQueueConnectionString);
   let channel = await connection.createChannel();
   await channel.prefetch(1);
   await consume({ connection, channel });
 }
 
-function consume({ connection, channel, resultsChannel }) {
+const consume = async ({ connection, channel, resultsChannel }) => {
   return new Promise((resolve, reject) => {
     channel.consume("processing.results", async function (msg) {
       let msgBody = msg.content.toString();
@@ -35,10 +40,12 @@ function consume({ connection, channel, resultsChannel }) {
       }
       console.log("Received a result message, requestId:", requestId, "docID", docId, "processingResults:", processingResults);
       await channel.ack(msg);
+      const { email, original } = separateEmail(originalText)
       axios.post('http://localhost:3002/email', {
+        email,
         docId,
         result: resultText,
-        original: originalText,
+        original,
       })
       .then(function (response) {
         if (response.status === 200) {
@@ -59,10 +66,6 @@ function consume({ connection, channel, resultsChannel }) {
     });
   });
 }
-
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json())
-app.use('/upload', routes);
 
 app.listen(port, () => console.log(`App listening at port ${port}`));
 
