@@ -47,11 +47,11 @@ const postText = async (req, res, next) => {
   })
   .then(function (response) {
     if (response.status === 200) {
-      console.log(response.data)
+      console.log('Data passed to Translator:', response.data);
     }
   })
   .catch(function (error) {
-    console.log(error);
+    console.log('Error at passing data to translator:', error);
   });
 
 
