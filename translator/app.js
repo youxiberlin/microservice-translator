@@ -1,5 +1,6 @@
 require('dotenv').config({ path: '../.env' })
 const fs = require('fs').promises;
+const fsSync = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const amqp = require('amqplib');
@@ -33,13 +34,15 @@ const consume = async ({ connection, channel, resultsChannel }) => {
       let resultText = processingResults.join('\n');
       let originalText;
       try {
-        await fs.appendFile(`data/results/${docId}.txt`, resultText)
         originalText = await fs.readFile(`data/uploads/${docId}.txt`, 'utf8');
+        if (!fsSync.existsSync('data/results')) fsSync.mkdirSync('data/results', { recursive: true })
+        await fs.appendFile(`data/results/${docId}.txt`, resultText)
       } catch(err) {
         console.error(err)
       }
       console.log("Received a result message, requestId:", requestId, "docID", docId, "processingResults:", processingResults);
       await channel.ack(msg);
+      console.log('originaltext', originalText)
       const { email, original } = separateEmail(originalText)
       axios.post('http://localhost:3002/email', {
         email,

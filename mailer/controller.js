@@ -1,5 +1,6 @@
 require('dotenv').config({ path: '../.env' })
 const fs = require('fs').promises;
+const fsSync = require('fs');
 const { mailer } = require('./lib/mailer');
 const { makeFinalOutput } = require('./lib/result-formatter');
 const mailsender = process.env.DEV_MAILSENDER;
@@ -11,6 +12,7 @@ const postText = async (req, res, next) => {
   const filename = `${req.body.docId}.txt`;
   const path = `data/email/${filename}`;
   try {
+    if (!fsSync.existsSync('data/email')) fsSync.mkdirSync('data/email', { recursive: true })
     await fs.appendFile(path, output)
   } catch(err) {
     console.error(err)

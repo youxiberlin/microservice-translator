@@ -29,6 +29,7 @@ const postText = async (req, res, next) => {
 
   const { data, email } = req.body;
   const docId = nanoid();
+  if (!fs.existsSync('data/uploads')) fs.mkdirSync('data/uploads', { recursive: true })
   fs.writeFile(`data/uploads/${docId}.txt`, `${email}\n${data}`, (err) => {
     if (err) return console.log(err)
   })
