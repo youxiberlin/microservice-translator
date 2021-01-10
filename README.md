@@ -19,20 +19,22 @@ $ npm run install:all
 
 3. Set environment variables
 
-To run the application, please sent the following environment variables at root directory.
-```
-AMQP_URL='' // required: to connect AMQP Ex.) 'amqps://xxxxx'
-MAIL_HOST='' // required: to send email Ex.) smtp.mailtra.io
-MAIL_PORT='' // required
-MAIL_USER='' // required
-MAIL_PASS='' // required
-GATEWAY_PORT='' // optional: default is set to 3000
-TRANSLATOR_PORT='' // optional: default is set to 3001
-MAILER_PORT='' // optional: default is set to 3002
-TMS_PORT='' // optional: default is set to 3003
-DEV_MAILSENDER='' // Please set an email address to use as a sender of email
-DEV_MAILRECIPIENT='' // optional: recipient email address to send the test email to
-```
+To run the application, please set the following environment variables at the root directory.
+
+| Variable     |           | Example, Memo|
+| ------------- |:--------:| -----:|
+| AMQP_URL  | **Required** | Ex. amqps://xxxxx |
+| MAIL_HOST  |**Required**      | Ex. smtp.mailtra.io |
+| MAIL_PORT | **Required**     |    |
+| MAIL_USER | **Required**      |    |
+| MAIL_PASS | **Required**     |    |
+| GATEWAY_PORT | Optional      | Default value: 3000  |
+| TRANSLATOR_PORT | Optional      |Default value: 3001 |
+| MAILER_PORT | Optional     | Default value: 3002 |
+| TMS_PORT| Optional     |Default value: 3003|
+| DEV_MAILSENDER | **Required**     | sender of email|
+| DEV_MAILRECIPIENT | Optional      | recipient email to send the test email to|
+  
 
 3. Run all the micro services
 I used PM2 to manage the process. If you have not installed PM2, [please install it](https://pm2.keymetrics.io/docs/usage/quick-start/).
@@ -92,7 +94,7 @@ or with Postman:
 
 ![postman](./assets/posman-example1.png)
 
-**NOTE:** The file must to be a text file and the content must follow the following format.
+**NOTE:** The file must be a text file and the content must follow the following format.
 
 Example of a text file `lengoo.txt`
 ```
@@ -112,7 +114,7 @@ To import a dictoinary data which you want to add to TMS, please send `POST` req
 
 **Requirement** 
 
-Data: The data needs to be a JSON object that has all of these keys: `source`, `target`, `sourceLanguage`, `targetLanguage` 
+Data: The data needs to be a JSON object that has **ALL** of these keys: `source`, `target`, `sourceLanguage`, `targetLanguage` 
 
 Content-type: application/json
 
