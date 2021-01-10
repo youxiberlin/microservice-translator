@@ -5,6 +5,22 @@
   "repository": "https://github.com/lengoo/backend-coding-challenge-yuki-sato.git",
   "author": "Yuki Sato <yuki.sato@lightcurve.io>",
   "license": "MIT",
+  "scripts": {
+    "start": "pm2 start ecosystem.config.js",
+    "stop": "pm2 delete ecosystem.config.js",
+    "install:all": "yarn && yarn install:gateway && yarn install:translator && yarn install:tms && yarn install:mailer",
+    "install:gateway": "cd ./gateway && yarn",
+    "install:translator": "cd ./translator && yarn",
+    "install:tms": "cd ./tms && yarn",
+    "install:mailer": "cd ./mailer && yarn",
+    "clean": "rm -rf ./node_modules",
+    "clean:all": "yarn clean && yarn clean:gateway && yarn clean:translator && yarn clean:tms && yarn clean:mailer",
+    "clean:gateway": "cd ./gateway && rm -rf ./node_modules",
+    "clean:translator": "cd ./translator && rm -rf ./node_modules",
+    "clean:tms": "cd ./tms && rm -rf ./node_modules",
+    "clean:mailer": "cd ./mailer && rm -rf ./node_modules",
+    "clean:storage": "cd ./gateway && rm -rf ./uploads && cd ../mailer && rm -rf ./data/email && cd ../translator && rm -rf ./data/results && rm -rf ./data/uploads"
+  },
   "dependencies": {
     "dotenv": "^8.2.0"
   }
