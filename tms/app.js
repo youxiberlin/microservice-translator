@@ -72,5 +72,7 @@ const processMessage = async (requestData) => {
   });
 }
 
-app.listen(port, () => console.log(`App listening at port ${port}`));
+const server = app.listen(port, () => console.log(`App listening at port ${port}`));
 listenForMessages();
+
+module.exports = { server }

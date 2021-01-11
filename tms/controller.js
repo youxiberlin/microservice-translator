@@ -21,7 +21,10 @@ const postData = async (req, res, next) => {
     console.error(err)
   }
 
-  res.json('data posted');
+  res.json({
+    status: "Success!",
+    message: "Data is successfully imported."
+  });
 };
 
 module.exports = {

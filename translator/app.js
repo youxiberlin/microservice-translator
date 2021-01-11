@@ -70,6 +70,8 @@ const consume = async ({ connection, channel, resultsChannel }) => {
   });
 }
 
-app.listen(port, () => console.log(`App listening at port ${port}`));
+const server = app.listen(port, () => console.log(`App listening at port ${port}`));
 
 listenForResults();
+
+module.exports = { server }
