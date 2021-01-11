@@ -1,7 +1,8 @@
-const fs =  require('fs');
+const fs = require('fs');
 const amqp = require('amqplib');
 const messageQueueConnectionString = process.env.AMQP_URL;
 const { nanoid } = require('nanoid');
+const { parseData } = require('./lib/parser')
 
 let lastRequestId = 1;
 
@@ -14,10 +15,6 @@ const publishToChannel = (channel, { routingKey, exchangeName, data }) => {
       resolve();
     })
   });
-}
-const extract = (s) => {
-  const splitted = s.split(' ');
-  return splitted.slice(4, splitted.length).join(' ')
 }
 
 const postText = async (req, res, next) => {
@@ -35,7 +32,7 @@ const postText = async (req, res, next) => {
   })
 
   let requestData = req.body.data;
-  const extracted = requestData.split('\n').map(item => extract(item))
+  const extracted = parseData(requestData);
   console.log("Published a request message, requestId:", requestId);
 
   await publishToChannel(channel, { routingKey: "request", exchangeName: "processing", data: { requestId, extracted, docId } });
