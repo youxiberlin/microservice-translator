@@ -19,7 +19,8 @@ $ npm run install:all
 
 3. Set environment variables
 
-To run the application, please set the following environment variables at the root directory.
+The application is composed of four different micro services: `gateway` `translator` `tms` and `mailer`.  
+To run the application, please set the following environment variables at the **root** directory.
 
 | Variable     |           | Example, Memo|
 | ------------- |:--------:| -----:|
@@ -36,7 +37,8 @@ To run the application, please set the following environment variables at the ro
 | DEV_MAILRECIPIENT | Optional      | recipient email to send the test email to|
   
 
-3. Run all the micro services
+4. Run all the micro services 
+
 I used PM2 to manage the process. If you have not installed PM2, [please install it](https://pm2.keymetrics.io/docs/usage/quick-start/).
 ```
 $ yarn start
@@ -46,7 +48,7 @@ $ yarn start
 $ npm run start
 ```
 
-4. Stop all the processes
+5. Stop all the processes
 ```
 $ yarn stop
 
@@ -60,13 +62,17 @@ $ npm run stop
 Example:
 To run only `gateway` service
 ```
-cd ./gatweay
-yarn start or npm run start
+$ cd ./gatweay
+$ yarn start
+
+# or
+
+$ npm run start
 ```
 
 ## Usage for client
 
-### To upload a text file for translation
+### 1. To upload a text file for translation
 To upload a file which you want to be translated, please send `POST` request to a following endpoint. 
 
 **Endpoint** 
@@ -105,7 +111,7 @@ Example of a text file `lengoo.txt`
 
 After you send the `POST` request, you should receive an email with the text file that has the result of the translation.
 
-### To import a dictionary data
+### 2. To import a dictionary data
 To import a dictoinary data which you want to add to TMS, please send `POST` request to a following endpoint. 
 
 **Endpoint** 
@@ -138,8 +144,11 @@ http://localhost:3003/data
 
 ## How to run tests
 
+All the tests can be run by `yarn test` or `npm run test`. 
 
+------
+That's it! Hope this works. 🚀 
 
-If you have any questions, please drop me a line at sato.youxi@gmail.com
+If you have any questions, please drop me a line at sato.youxi@gmail.com ✉️
 
 Yuki 
