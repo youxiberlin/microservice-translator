@@ -1,0 +1,1 @@
+module.exports = '1 [00:00:12.00 - 00:01:20.00] Hello World\n2 [00:03:55.00 - 00:04:20.00] Hello guys.\n3 [00:04:59.00 - 00:05:30.00] I walk to the supermarket.'
