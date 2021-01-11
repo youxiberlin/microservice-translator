@@ -11,3 +11,5 @@ app.use(bodyParser.json());
 app.use('/data', routes);
 
 app.listen(port, () => console.log(`App listening at port ${port}`));
+
+module.exports = { app }

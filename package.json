@@ -8,6 +8,7 @@
   "scripts": {
     "start": "pm2 start ecosystem.config.js",
     "stop": "pm2 delete ecosystem.config.js",
+    "test": "jest",
     "install:all": "yarn && yarn install:gateway && yarn install:translator && yarn install:tms && yarn install:mailer",
     "install:gateway": "cd ./gateway && yarn",
     "install:translator": "cd ./translator && yarn",
@@ -23,5 +24,9 @@
   },
   "dependencies": {
     "dotenv": "^8.2.0"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3",
+    "supertest": "^6.0.1"
   }
 }
