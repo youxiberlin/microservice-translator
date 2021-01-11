@@ -26,7 +26,7 @@ const calcLevenDistance = (a, b) => {
 }
 
 /**
- * @param {string} words - words to translate
+ * @param {string} sentence - words to translate
  * @param {Array} data 
  */
 const translateSentence = (data, sentence) => {
@@ -55,4 +55,6 @@ const translator = (data, source) => source.map(sentence => translateSentence(da
 
 module.exports = {
   translator,
+  calcLevenDistance,
+  translateSentence
 };
