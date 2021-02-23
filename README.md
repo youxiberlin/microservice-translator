@@ -4,6 +4,21 @@
 
 NodeJS newer than v12.14.1
 
+## Architecture
+The system is composed of the following four microservices.
+
+- Gateway:
+  responsible for processing client post request that uploads a text file for translation, and for passing the contents to Translator service
+
+- Translator:
+  responseible for getting the translation contents from Gateway service and send the text to TMS to make it translated. Reveives the result from TMS and passes it to Mailer.
+
+- TMS:
+  Translation management system. Receives translation texts, translates and returns the result.
+
+- Mailer:
+  Receieves translation results from Translator service and sends email with the result to the client.
+
 ## How to run the application
 
 1. Clone this repository locally
