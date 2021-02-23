@@ -1,4 +1,4 @@
-# Lengoo Coding challenge
+# Coding challenge
 
 **Requirement**　
 
